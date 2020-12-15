@@ -1,7 +1,7 @@
 import {React, useContext} from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { connect } from 'react-redux';
-import {setFirstNameAC, setTelephoneAC, addContactAC,deleteContactAC} from '../redux/action'
+import {setFirstNameAC, setTelephoneAC, addContactAC,deleteContactAC,redactContactAC,setNewContactFirstNameAC,setNewContactTelephoneAC} from '../redux/action'
 
 const Contact = (props) => {
    
@@ -37,9 +37,42 @@ const Contact = (props) => {
                         
                                 <li key={item+index}>
                                     <div className="collapsible-header row valign-wrapper">
+                                    { 
+                                        props.redactContact  ?
+                                        <>
+                                        <div className="input-field col s4">
+                      
+                                            <input id="icon_prefix" type="text" className="validate" placeholder={item.firstName} onChange={(e) => props.setNewContactFirstNameAC(e.target.value)}/>
+                                            
+                                        </div>
+
+                                        <div className="input-field col s5">
+                                        
+                                        <input id="icon_telephone" type="tel" className="validate" placeholder={item.telephone} onChange={(e) => props.setNewContactTelephoneAC(e.target.value)} />
+                                        
+                                        </div>
+                                        <button className="btn col s2 m1" onClick={() => props.redactContactAC(index)}>Accept</button>
+                                        </> 
+                                        :
+                                        <>
+                                                    <p className="col s4">{item.firstName} </p>
+                                                    <p className="col s5">{item.telephone}</p>
+                                                    <button className="btn col s2 m1" onClick={() => props.redactContactAC(index)}>Redact</button>
+                                                </>
+                            
+                                       
+                                    }
+                                   
+                                        
+                                         
+                                             
+                                         
+                                         
+                                         
                                     
-                                    <p className="col s9">{item.firstName} {item.telephone}</p>
-                                    <button className="btn col s2 m1" onClick={() => props.deleteContactAC(index)}>Redact</button>
+                                    
+                                    
+                                    
                                     <button className="btn col s1  red " onClick={() => props.deleteContactAC(index)}>Delete</button>
                                     
                                    
@@ -60,7 +93,8 @@ const Contact = (props) => {
 const mapStateToProps = (state) => ({
     contacts: state.changeContact.contacts,
     firstName: state.inputReducer.currectInput.firstName,
-    telephone: state.inputReducer.currectInput.telephone
+    telephone: state.inputReducer.currectInput.telephone,
+    redactContact: state.changeContact.redactContact.redact
   });
   
   export default connect(mapStateToProps,
@@ -69,5 +103,8 @@ const mapStateToProps = (state) => ({
         setTelephoneAC,
         setFirstNameAC,
         addContactAC,
-        deleteContactAC
+        deleteContactAC,
+        redactContactAC,
+        setNewContactFirstNameAC,
+        setNewContactTelephoneAC
     })(Contact);
