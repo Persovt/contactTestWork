@@ -1,8 +1,8 @@
 import {React, useContext} from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { connect } from 'react-redux';
-import {setFirstNameAC, setTelephoneAC, addContactAC,deleteContactAC,redactContactAC,setNewContactFirstNameAC,setNewContactTelephoneAC} from '../redux/action'
-
+import {setFirstNameAC, setTelephoneAC, addContactAC,deleteContactAC,redactContactAC,setNewContactFirstNameAC,setNewContactTelephoneAC,sortContactAC} from '../redux/action'
+import {SORT_CONTACT_A_TO_Z,SORT_CONTACT_Z_TO_A} from '../redux/types'
 const Contact = (props) => {
    
     const auth = useContext(AuthContext)
@@ -31,8 +31,13 @@ const Contact = (props) => {
                     </div>
                     
                 </div> 
+                <div className="sorts row ">
+                <h5>Sort:</h5>
+                    <button className="btn col" onClick={() => props.sortContactAC(SORT_CONTACT_A_TO_Z)}>A-Z</button>
+                    <button className="btn col" onClick={() => props.sortContactAC(SORT_CONTACT_Z_TO_A)}>Z-A</button>
+                </div>
                 <ul className="collapsible">
-                    {props.contacts.map((item, index) => {
+                    {props.contacts.reverse().map((item, index) => {
                         return ( 
                         
                                 <li key={item+index}>
@@ -106,5 +111,6 @@ const mapStateToProps = (state) => ({
         deleteContactAC,
         redactContactAC,
         setNewContactFirstNameAC,
-        setNewContactTelephoneAC
+        setNewContactTelephoneAC,
+        sortContactAC
     })(Contact);
