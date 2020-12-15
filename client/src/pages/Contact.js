@@ -1,12 +1,17 @@
 import {React, useContext} from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { connect } from 'react-redux';
-import {setFirstNameAC, setTelephoneAC, addContactAC,deleteContactAC,redactContactAC,setNewContactFirstNameAC,setNewContactTelephoneAC,sortContactAC} from '../redux/action'
+import {useEffect} from 'react'
+import {setFirstNameAC, setTelephoneAC, addContactAC,deleteContactAC,redactContactAC,setNewContactFirstNameAC,setNewContactTelephoneAC,sortContactAC,filterContactAC} from '../redux/action'
 import {SORT_CONTACT_A_TO_Z,SORT_CONTACT_Z_TO_A} from '../redux/types'
 const Contact = (props) => {
    
     const auth = useContext(AuthContext)
-
+    useEffect(() => {
+        props.filterContactAC('')
+      }, [props.contacts]);
+   
+    
     return(
         <div className="">
             <button className="btn" onClick={() => auth.logout()}>logout</button>
@@ -31,13 +36,22 @@ const Contact = (props) => {
                     </div>
                     
                 </div> 
-                <div className="sorts row ">
-                <h5>Sort:</h5>
-                    <button className="btn col" onClick={() => props.sortContactAC(SORT_CONTACT_A_TO_Z)}>A-Z</button>
+                <div className="sorts row valign-wrapper">
+                <h5 className='col '>Sort:</h5>
+                    <button className="btn col " onClick={() => props.sortContactAC(SORT_CONTACT_A_TO_Z)}>A-Z</button>
                     <button className="btn col" onClick={() => props.sortContactAC(SORT_CONTACT_Z_TO_A)}>Z-A</button>
+                    <h5 className='col '>Search:</h5>
+                    <div className="input-field col ">
+                        <input placeholder="Input first name" id="first_name" type="text" className="validate" onChange={(e) => props.filterContactAC(e.target.value)}/>
+                        <label htmlFor="first_name">First Name</label>
+                    </div>
+                    
                 </div>
                 <ul className="collapsible">
-                    {props.contacts.reverse().map((item, index) => {
+                
+                
+                
+                    { props.contactFilter.map((item, index) => {
                         return ( 
                         
                                 <li key={item+index}>
@@ -67,16 +81,6 @@ const Contact = (props) => {
                             
                                        
                                     }
-                                   
-                                        
-                                         
-                                             
-                                         
-                                         
-                                         
-                                    
-                                    
-                                    
                                     
                                     <button className="btn col s1  red " onClick={() => props.deleteContactAC(index)}>Delete</button>
                                     
@@ -99,7 +103,8 @@ const mapStateToProps = (state) => ({
     contacts: state.changeContact.contacts,
     firstName: state.inputReducer.currectInput.firstName,
     telephone: state.inputReducer.currectInput.telephone,
-    redactContact: state.changeContact.redactContact.redact
+    redactContact: state.changeContact.redactContact.redact,
+    contactFilter: state.changeContact.contactFilter
   });
   
   export default connect(mapStateToProps,
@@ -112,5 +117,6 @@ const mapStateToProps = (state) => ({
         redactContactAC,
         setNewContactFirstNameAC,
         setNewContactTelephoneAC,
-        sortContactAC
+        sortContactAC,
+        filterContactAC
     })(Contact);

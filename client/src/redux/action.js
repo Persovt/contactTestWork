@@ -6,6 +6,7 @@ import {
     REDACT_CONTACT,
     SET_NEW_CONTACT_FIRST_NAME,
     SET_NEW_CONTACT_TELEPHONE,
+    FILTER_CONTACT,
    
 } from './types'
 
@@ -60,5 +61,11 @@ export const setNewContactTelephoneAC = (telephone) => {
 export const sortContactAC = (type) => {
     return {
         type
+    }
+}
+export const filterContactAC = (data) => {
+    return{
+        type: FILTER_CONTACT,
+        data
     }
 }

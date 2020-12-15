@@ -10,7 +10,8 @@ import {
   SET_NEW_CONTACT_TELEPHONE,
   SET_NEW_CONTACT_FIRST_NAME,
   SORT_CONTACT_Z_TO_A,
-  SORT_CONTACT_A_TO_Z
+  SORT_CONTACT_A_TO_Z,
+  FILTER_CONTACT
 } from './types'
 
 let initialState = {
@@ -23,8 +24,8 @@ let initialState = {
     newFirstName: '',
     newTelephone: ''
   },
-  contacts: []
-
+  contacts: [],
+  contactFilter: []
 }
 
 const inputReducer = (state = initialState, action) => {
@@ -52,15 +53,17 @@ const inputReducer = (state = initialState, action) => {
   }
 }
 const changeContact = (state = initialState, action) => {
+  
   switch (action.type) {
-
+   
     case ADD_CONTACT:
-
+      
       return Object.assign({}, state, {
-        contacts: [...state.contacts, {
+         contacts: [...state.contacts, {
           telephone: action.data.telephone,
           firstName: action.data.firstName
-        }]
+        }],
+       
       })
 
 
@@ -107,16 +110,24 @@ const changeContact = (state = initialState, action) => {
       // sorts bad for a BIG ARRAY AND I KNOW IT 
       
       case SORT_CONTACT_Z_TO_A: 
+      
         return Object.assign({}, state, {
-          contacts: state.contacts.slice().sort((a, b) => a.firstName > b.firstName ? 1 : -1)
+          contacts: state.contacts.slice().sort((a, b) => a.firstName < b.firstName ? 1 : -1)
         })
 
     case SORT_CONTACT_A_TO_Z:
-      
+     
       return Object.assign({}, state, {
-        contacts: state.contacts.slice().sort((a, b) => a.firstName < b.firstName ? 1 : -1)
+        contacts: state.contacts.slice().sort((a, b) => a.firstName > b.firstName ? 1 : -1)
         
       })
+
+    case FILTER_CONTACT:
+     console.log(123)
+      return Object.assign({}, state, {
+        contactFilter: state.contacts.filter((item) => item.firstName.includes(action.data) )
+      })
+
     default:
       return state
   }
