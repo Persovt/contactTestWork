@@ -1,0 +1,7 @@
+{
+    "port": 5000, 
+    "mongoURL": "mongodb+srv://persovt:mi260376@cluster0.fmkwc.mongodb.net/regisster?retryWrites=true&w=majority",
+    
+    "jwtSecret": "lamborgini"
+
+}
