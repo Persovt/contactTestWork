@@ -76,10 +76,10 @@ const changeContact = (state = initialState, action) => {
 
     case REDACT_CONTACT:
 
-      if (state.redactContact.newTelephone || state.redactContact.newFirstName) {
-        state.contacts[action.data].telephone = state.redactContact.newTelephone
-        state.contacts[action.data].firstName = state.redactContact.newFirstName
-      }
+     
+        if(state.redactContact.newTelephone) state.contacts[action.data].telephone = state.redactContact.newTelephone 
+        if(state.redactContact.newFirstName) state.contacts[action.data].firstName = state.redactContact.newFirstName 
+     
       state.contacts[action.data].redact =  !state.contacts[action.data].redact
       return Object.assign({}, state, {
         contacts: [...state.contacts]
@@ -125,7 +125,7 @@ const changeContact = (state = initialState, action) => {
       })
 
     case FILTER_CONTACT:
-     console.log(123)
+  
       return Object.assign({}, state, {
         contactFilter: state.contacts.filter((item) => item.firstName.includes(action.data) )
       })
