@@ -1,5 +1,8 @@
 # contactTestWork
 ## First step dowload project and install
-- npm init
+- npm init -y
 - npm install
-- npm start
+- cd client
+- npm install 
+- cd ../
+- npm run dev
