@@ -1,3 +1,4 @@
+import './contact.css'
 import {React, useContext} from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { connect } from 'react-redux';
@@ -21,14 +22,14 @@ const Contact = (props) => {
 
                         <div className="input-field col s6">
                       
-                            <input id="icon_prefix" type="text" className="validate" onChange={(e) => props.setFirstNameAC(e.target.value)}/>
+                            <input id="icon_prefix" type="text"  onChange={(e) => props.setFirstNameAC(e.target.value)}/>
                             <label htmlFor="icon_prefix">First Name</label>
                         </div>
 
                         <div className="input-field col s6">
                        
-                        <input id="icon_telephone" type="tel" className="validate" onChange={(e) => props.setTelephoneAC(e.target.value)}/>
-                        <label htmlFor="icon_telephone">Telephone</label>
+                            <input id="input_text" type="text"  maxLength="15"  onChange={(e) => props.setTelephoneAC(e.target.value)}/>
+                            <label htmlFor="input_text">Telephone</label>
                         </div>
 
                         </form>
@@ -52,12 +53,14 @@ const Contact = (props) => {
                 
                 
                     { props.contactFilter.map((item, index) => {
+                        
                         return ( 
                         
                                 <li key={item+index}>
                                     <div className="collapsible-header row valign-wrapper">
                                     { 
-                                        props.redactContact  ?
+                                       
+                                        props.contactFilter[index].redact  ?
                                         <>
                                         <div className="input-field col s4">
                       
@@ -74,7 +77,7 @@ const Contact = (props) => {
                                         </> 
                                         :
                                         <>
-                                                    <p className="col s4">{item.firstName} </p>
+                                                    <p className="col s4 firstName-text">{item.firstName} </p>
                                                     <p className="col s5">{item.telephone}</p>
                                                     <button className="btn col s2 m1" onClick={() => props.redactContactAC(index)}>Redact</button>
                                                 </>
@@ -83,14 +86,8 @@ const Contact = (props) => {
                                     }
                                     
                                     <button className="btn col s1  red " onClick={() => props.deleteContactAC(index)}>Delete</button>
-                                    
-                                   
-                                    </div>
-                                   
-                                </li>
-                                
-                        
-                           
+                                    </div>                             
+                                </li>           
                         )
                     })}
                 </ul>
@@ -103,7 +100,7 @@ const mapStateToProps = (state) => ({
     contacts: state.changeContact.contacts,
     firstName: state.inputReducer.currectInput.firstName,
     telephone: state.inputReducer.currectInput.telephone,
-    redactContact: state.changeContact.redactContact.redact,
+    //redactContact: state.changeContact.contacts,
     contactFilter: state.changeContact.contactFilter
   });
   

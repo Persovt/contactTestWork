@@ -20,7 +20,7 @@ let initialState = {
     telephone: ''
   },
   redactContact: {
-    redact: false,
+    
     newFirstName: '',
     newTelephone: ''
   },
@@ -61,8 +61,9 @@ const changeContact = (state = initialState, action) => {
       return Object.assign({}, state, {
          contacts: [...state.contacts, {
           telephone: action.data.telephone,
-          firstName: action.data.firstName
-        }],
+          firstName: action.data.firstName,
+          redact: false
+        }]
        
       })
 
@@ -79,11 +80,12 @@ const changeContact = (state = initialState, action) => {
         state.contacts[action.data].telephone = state.redactContact.newTelephone
         state.contacts[action.data].firstName = state.redactContact.newFirstName
       }
+      state.contacts[action.data].redact =  !state.contacts[action.data].redact
       return Object.assign({}, state, {
-        redactContact: {
-          redact: !state.redactContact.redact
-        }
+        contacts: [...state.contacts]
       })
+      
+      
 
 
 
