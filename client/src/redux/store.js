@@ -1,13 +1,12 @@
 import {
     combineRuducer
 } from './reducer'
-import {
-    createStore,
-    applyMiddleware
-} from 'redux'
 
-import logger from 'redux-logger'
+import { configureStore } from '@reduxjs/toolkit';
 
-let store = createStore(combineRuducer, applyMiddleware(logger))
-
+ const store = configureStore({
+    reducer: combineRuducer,
+    devTools: process.env.NODE_ENV !== 'production',
+   });
+   
 export default store

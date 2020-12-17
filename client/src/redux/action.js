@@ -7,65 +7,19 @@ import {
     SET_NEW_CONTACT_FIRST_NAME,
     SET_NEW_CONTACT_TELEPHONE,
     FILTER_CONTACT,
+    SORT_CONTACT_Z_TO_A,
+    SORT_CONTACT_A_TO_Z
    
 } from './types'
+import {createAction} from '@reduxjs/toolkit'
 
-export const setFirstNameAC = (firstName) => {
-    return {
-        type: SET_FIRST_NAME,
-        firstName
-    }
-}
-
-export const setTelephoneAC = (telephone) => {
-    return {
-        type: SET_TELEPHONE,
-        telephone
-    }
-}
-
-export const addContactAC = (data) => {
-    return {
-        type: ADD_CONTACT,
-        data
-    }
-}
-
-export const deleteContactAC = (index) => {
-    return {
-        type: DELETE_CONTACT,
-        index
-    }
-}
-
-export const redactContactAC = (data) => {
-    return {
-        type: REDACT_CONTACT,
-        data
-
-    }
-}
-export const setNewContactFirstNameAC = (firstName) => {
-    return {
-        type: SET_NEW_CONTACT_FIRST_NAME,
-        firstName
-    }
-}
-
-export const setNewContactTelephoneAC = (telephone) => {
-    return {
-        type: SET_NEW_CONTACT_TELEPHONE,
-        telephone
-    }
-}
-export const sortContactAC = (type) => {
-    return {
-        type
-    }
-}
-export const filterContactAC = (data) => {
-    return{
-        type: FILTER_CONTACT,
-        data
-    }
-}
+export const setFirstNameAC = createAction(SET_FIRST_NAME);
+export const setTelephoneAC = createAction(SET_TELEPHONE);
+export const addContactAC = createAction(ADD_CONTACT);
+export const deleteContactAC = createAction(DELETE_CONTACT);
+export const redactContactAC = createAction(REDACT_CONTACT);
+export const setNewContactFirstNameAC = createAction(SET_NEW_CONTACT_FIRST_NAME);
+export const setNewContactTelephoneAC = createAction(SET_NEW_CONTACT_TELEPHONE);
+export const sortContactAZAC = createAction(SORT_CONTACT_A_TO_Z);
+export const sortContactZAAC = createAction(SORT_CONTACT_Z_TO_A);
+export const filterContactAC = createAction(FILTER_CONTACT);

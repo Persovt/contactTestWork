@@ -13,7 +13,7 @@ import {
   SORT_CONTACT_A_TO_Z,
   FILTER_CONTACT
 } from './types'
-
+import {createReducer} from '@reduxjs/toolkit'
 let initialState = {
   currectInput: {
     firstName: '',
@@ -28,112 +28,54 @@ let initialState = {
   contactFilter: []
 }
 
-const inputReducer = (state = initialState, action) => {
-  switch (action.type) {
-
-    case SET_FIRST_NAME:
-      return Object.assign({}, state, {
-        currectInput: {
-          telephone: state.currectInput.telephone,
-          firstName: action.firstName
-        }
-      })
-
-    case SET_TELEPHONE:
-      return Object.assign({}, state, {
-        currectInput: {
-          firstName: state.currectInput.firstName,
-          telephone: action.telephone
-        }
-      })
-
-
-    default:
-      return state
-  }
-}
-const changeContact = (state = initialState, action) => {
-  
-  switch (action.type) {
+const inputReducer = createReducer(initialState, {
+  [SET_FIRST_NAME]: (state, action) => {
+    state.currectInput.firstName = action.payload
+  },
+  [SET_TELEPHONE]: (state, action) => {
+    state.currectInput.telephone = action.payload
    
-    case ADD_CONTACT:
-      
-      return Object.assign({}, state, {
-         contacts: [...state.contacts, {
-          telephone: action.data.telephone,
-          firstName: action.data.firstName,
-          redact: false
-        }]
-       
-      })
-
-
-    case DELETE_CONTACT:
-
-      return Object.assign({}, state, {
-        contacts: state.contacts.filter((item, index) => index !== action.index)
-      })
-
-    case REDACT_CONTACT:
-
-     
-        if(state.redactContact.newTelephone) state.contacts[action.data].telephone = state.redactContact.newTelephone 
-        if(state.redactContact.newFirstName) state.contacts[action.data].firstName = state.redactContact.newFirstName 
-     
-      state.contacts[action.data].redact =  !state.contacts[action.data].redact
-      return Object.assign({}, state, {
-        contacts: [...state.contacts]
-      })
-      
-      
-
-
-
-
-
-    case SET_NEW_CONTACT_FIRST_NAME:
-      return Object.assign({}, state, {
-        redactContact: {
-          newFirstName: action.firstName,
-          newTelephone: state.redactContact.newTelephone,
-          redact: state.redactContact.redact
-        }
-      })
-
-    case SET_NEW_CONTACT_TELEPHONE:
-      return Object.assign({}, state, {
-        redactContact: {
-          newTelephone: action.telephone,
-          newFirstName: state.redactContact.newFirstName,
-          redact: state.redactContact.redact
-        }
-      })
-
-      // sorts bad for a BIG ARRAY AND I KNOW IT 
-      
-      case SORT_CONTACT_Z_TO_A: 
-      
-        return Object.assign({}, state, {
-          contacts: state.contacts.slice().sort((a, b) => a.firstName < b.firstName ? 1 : -1)
-        })
-
-    case SORT_CONTACT_A_TO_Z:
-     
-      return Object.assign({}, state, {
-        contacts: state.contacts.slice().sort((a, b) => a.firstName > b.firstName ? 1 : -1)
-        
-      })
-
-    case FILTER_CONTACT:
+  },
+})
+const changeContact = createReducer(initialState, {
+  [ADD_CONTACT]: (state, action) => {
+    state.contacts = [...state.contacts, {
+                telephone: action.payload.telephone,
+                firstName: action.payload.firstName,
+                redact: false
+              }]
+  },
+  [FILTER_CONTACT]: (state, action) => {
+    state.contactFilter = state.contacts.filter((item) => item.firstName.includes(action.payload))
+  },
+  [SET_NEW_CONTACT_FIRST_NAME]: (state, action) => {
+    state.redactContact.newFirstName = action.payload
+  },
+  [SET_NEW_CONTACT_TELEPHONE]: (state, action) => {
+    state.redactContact.newTelephone = action.payload
+  },
+  [REDACT_CONTACT]: (state, action) => {
+    if(state.redactContact.newTelephone) state.contacts[action.payload].telephone = state.redactContact.newTelephone 
+    if(state.redactContact.newFirstName) state.contacts[action.payload].firstName = state.redactContact.newFirstName 
+    state.contacts[action.payload].redact =  !state.contacts[action.payload].redact
+  },
+  [REDACT_CONTACT]: (state, action) => {
+    if(state.redactContact.newTelephone) state.contacts[action.payload].telephone = state.redactContact.newTelephone 
+    if(state.redactContact.newFirstName) state.contacts[action.payload].firstName = state.redactContact.newFirstName 
+    state.contacts[action.payload].redact =  !state.contacts[action.payload].redact
+  },
+  [DELETE_CONTACT]: (state, action) => {
+    state.contacts = state.contacts.filter((item, index) => index !== action.payload)
+  },
+  [SORT_CONTACT_Z_TO_A]: (state, action) => {
+    state.contacts = state.contacts.slice().sort((a, b) => a.firstName < b.firstName ? 1 : -1)
+  },
+  [SORT_CONTACT_A_TO_Z]: (state, action) => {
+    state.contacts = state.contacts.slice().sort((a, b) => a.firstName > b.firstName ? 1 : -1)
+  },
   
-      return Object.assign({}, state, {
-        contactFilter: state.contacts.filter((item) => item.firstName.includes(action.data) )
-      })
+})
 
-    default:
-      return state
-  }
-}
 
 export const combineRuducer = combineReducers({
   inputReducer,
