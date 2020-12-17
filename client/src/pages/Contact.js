@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext'
 import { connect } from 'react-redux';
 import {useEffect} from 'react'
 import {setFirstNameAC, setTelephoneAC, addContactAC,deleteContactAC,redactContactAC,setNewContactFirstNameAC,setNewContactTelephoneAC,sortContactAZAC,sortContactZAAC,filterContactAC} from '../redux/action'
-import {SORT_CONTACT_A_TO_Z,SORT_CONTACT_Z_TO_A} from '../redux/types'
+
 const Contact = (props) => {
    
     const auth = useContext(AuthContext)
@@ -39,8 +39,8 @@ const Contact = (props) => {
                 </div> 
                 <div className="sorts row valign-wrapper">
                 <h5 className='col '>Sort:</h5>
-                    <button className="btn col " onClick={() => props.sortContactAZAC(SORT_CONTACT_A_TO_Z)}>A-Z</button>
-                    <button className="btn col" onClick={() => props.sortContactZAAC(SORT_CONTACT_Z_TO_A)}>Z-A</button>
+                    <button className="btn col " onClick={() => props.sortContactAZAC()}>A-Z</button>
+                    <button className="btn col" onClick={() => props.sortContactZAAC()}>Z-A</button>
                     <h5 className='col '>Search:</h5>
                     <div className="input-field col ">
                         <input placeholder="Input first name" id="first_name" type="text" className="validate" onChange={(e) => props.filterContactAC(e.target.value)}/>
@@ -100,7 +100,6 @@ const mapStateToProps = (state) => ({
     contacts: state.changeContact.contacts,
     firstName: state.inputReducer.currectInput.firstName,
     telephone: state.inputReducer.currectInput.telephone,
-    //redactContact: state.changeContact.contacts,
     contactFilter: state.changeContact.contactFilter
   });
   

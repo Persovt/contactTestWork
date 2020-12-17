@@ -59,11 +59,6 @@ const changeContact = createReducer(initialState, {
     if(state.redactContact.newFirstName) state.contacts[action.payload].firstName = state.redactContact.newFirstName 
     state.contacts[action.payload].redact =  !state.contacts[action.payload].redact
   },
-  [REDACT_CONTACT]: (state, action) => {
-    if(state.redactContact.newTelephone) state.contacts[action.payload].telephone = state.redactContact.newTelephone 
-    if(state.redactContact.newFirstName) state.contacts[action.payload].firstName = state.redactContact.newFirstName 
-    state.contacts[action.payload].redact =  !state.contacts[action.payload].redact
-  },
   [DELETE_CONTACT]: (state, action) => {
     state.contacts = state.contacts.filter((item, index) => index !== action.payload)
   },
