@@ -1,6 +1,6 @@
 import {React} from 'react'
 import {Switch, Route, Redirect} from 'react-router-dom'
-import {AuthPage} from './pages/AuthPage'
+import AuthPage from './pages/AuthPage'
 import Contact from './pages/Contact'
 
 export const useRoutes = isAuth => {

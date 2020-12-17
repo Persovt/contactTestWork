@@ -2,13 +2,14 @@ import {
   combineReducers
 } from 'redux'
 import {
-  SET_FIRST_NAME,
-  SET_TELEPHONE,
+
   ADD_CONTACT,
+  SET_INPUT_AUTH,
+  SET_INPUT_CONTACT,
+
   DELETE_CONTACT,
   REDACT_CONTACT,
-  SET_NEW_CONTACT_TELEPHONE,
-  SET_NEW_CONTACT_FIRST_NAME,
+
   SORT_CONTACT_Z_TO_A,
   SORT_CONTACT_A_TO_Z,
   FILTER_CONTACT
@@ -17,28 +18,28 @@ import {createReducer} from '@reduxjs/toolkit'
 let initialState = {
   currectInput: {
     firstName: '',
-    telephone: ''
-  },
-  redactContact: {
-    
+    telephone: '',
     newFirstName: '',
-    newTelephone: ''
+    newTelephone: '',
+    email: '',
+    password: ''
   },
   contacts: [],
   contactFilter: []
 }
 
-const inputReducer = createReducer(initialState, {
-  [SET_FIRST_NAME]: (state, action) => {
-    state.currectInput.firstName = action.payload
-  },
-  [SET_TELEPHONE]: (state, action) => {
-    state.currectInput.telephone = action.payload
-   
+const AuthReducer = createReducer(initialState, {
+  [SET_INPUT_AUTH]: (state, action) => {
+    state.currectInput[action.payload.name] =  action.payload.value
   },
 })
-const changeContact = createReducer(initialState, {
+
+const ContactsReducer = createReducer(initialState, {
+  [SET_INPUT_CONTACT]: (state, action) => {
+    state.currectInput[action.payload.name] =  action.payload.value
+  },
   [ADD_CONTACT]: (state, action) => {
+    console.log(action)
     state.contacts = [...state.contacts, {
                 telephone: action.payload.telephone,
                 firstName: action.payload.firstName,
@@ -48,15 +49,9 @@ const changeContact = createReducer(initialState, {
   [FILTER_CONTACT]: (state, action) => {
     state.contactFilter = state.contacts.filter((item) => item.firstName.includes(action.payload))
   },
-  [SET_NEW_CONTACT_FIRST_NAME]: (state, action) => {
-    state.redactContact.newFirstName = action.payload
-  },
-  [SET_NEW_CONTACT_TELEPHONE]: (state, action) => {
-    state.redactContact.newTelephone = action.payload
-  },
   [REDACT_CONTACT]: (state, action) => {
-    if(state.redactContact.newTelephone) state.contacts[action.payload].telephone = state.redactContact.newTelephone 
-    if(state.redactContact.newFirstName) state.contacts[action.payload].firstName = state.redactContact.newFirstName 
+    if(state.currectInput.newTelephone) state.contacts[action.payload].telephone = state.currectInput.newTelephone 
+    if(state.currectInput.newFirstName) state.contacts[action.payload].firstName = state.currectInput.newFirstName 
     state.contacts[action.payload].redact =  !state.contacts[action.payload].redact
   },
   [DELETE_CONTACT]: (state, action) => {
@@ -73,7 +68,6 @@ const changeContact = createReducer(initialState, {
 
 
 export const combineRuducer = combineReducers({
-  inputReducer,
-  changeContact,
-  
+  ContactsReducer,
+  AuthReducer
 })

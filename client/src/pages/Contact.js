@@ -3,7 +3,7 @@ import {React, useContext} from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { connect } from 'react-redux';
 import {useEffect} from 'react'
-import {setFirstNameAC, setTelephoneAC, addContactAC,deleteContactAC,redactContactAC,setNewContactFirstNameAC,setNewContactTelephoneAC,sortContactAZAC,sortContactZAAC,filterContactAC} from '../redux/action'
+import {addContactAC,setInputContactAC,deleteContactAC,redactContactAC,sortContactAZAC,sortContactZAAC,filterContactAC} from '../redux/action'
 
 const Contact = (props) => {
    
@@ -12,7 +12,9 @@ const Contact = (props) => {
         props.filterContactAC('')
       }, [props.contacts]);
    
-    
+      const changeHandler = event => {
+        return {value: event.target.value, name: event.target.name}
+     }
     return(
         <div className="">
             <button className="btn" onClick={() => auth.logout()}>logout</button>
@@ -22,13 +24,13 @@ const Contact = (props) => {
 
                         <div className="input-field col s6">
                       
-                            <input id="icon_prefix" type="text"  onChange={(e) => props.setFirstNameAC(e.target.value)}/>
+                            <input id="icon_prefix" type="text" name="firstName" onChange={(e) => props.setInputContactAC(changeHandler(e))}/>
                             <label htmlFor="icon_prefix">First Name</label>
                         </div>
 
                         <div className="input-field col s6">
                        
-                            <input id="input_text" type="text"  maxLength="15"  onChange={(e) => props.setTelephoneAC(e.target.value)}/>
+                            <input id="input_text" type="text"  maxLength="15" name="telephone" onChange={(e) => props.setInputContactAC(changeHandler(e))}/>
                             <label htmlFor="input_text">Telephone</label>
                         </div>
 
@@ -64,13 +66,13 @@ const Contact = (props) => {
                                         <>
                                         <div className="input-field col s4">
                       
-                                            <input id="icon_prefix" type="text" className="validate" placeholder={item.firstName} onChange={(e) => props.setNewContactFirstNameAC(e.target.value)}/>
+                                            <input id="icon_prefix" type="text" className="validate" name="newFirstName" placeholder={item.firstName} onChange={(e) => props.setInputContactAC(changeHandler(e))}/>
                                             
                                         </div>
 
                                         <div className="input-field col s5">
                                         
-                                        <input id="icon_telephone" type="tel" className="validate" placeholder={item.telephone} onChange={(e) => props.setNewContactTelephoneAC(e.target.value)} />
+                                        <input id="icon_telephone" type="tel" className="validate" name="newTelephone" placeholder={item.telephone} onChange={(e) => props.setInputContactAC(changeHandler(e))} />
                                         
                                         </div>
                                         <button className="btn col s2 m1" onClick={() => props.redactContactAC(index)}>Accept</button>
@@ -97,23 +99,22 @@ const Contact = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    contacts: state.changeContact.contacts,
-    firstName: state.inputReducer.currectInput.firstName,
-    telephone: state.inputReducer.currectInput.telephone,
-    contactFilter: state.changeContact.contactFilter
+    firstName: state.ContactsReducer.currectInput.firstName,
+    telephone: state.ContactsReducer.currectInput.telephone,
+    contacts: state.ContactsReducer.contacts,
+    contactFilter: state.ContactsReducer.contactFilter
   });
   
   export default connect(mapStateToProps,
     {
 
-        setTelephoneAC,
-        setFirstNameAC,
+       
         addContactAC,
         deleteContactAC,
         redactContactAC,
-        setNewContactFirstNameAC,
-        setNewContactTelephoneAC,
+       
         sortContactAZAC,
         sortContactZAAC,
-        filterContactAC
+        filterContactAC,
+        setInputContactAC
     })(Contact);

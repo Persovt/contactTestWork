@@ -1,23 +1,19 @@
 
-import {React, useState, useEffect, useContext} from 'react'
+import {React, useEffect, useContext} from 'react'
 import { AuthContext } from '../context/AuthContext'
 import {useHttp} from '../hooks/http.hook'
 import { useMessage } from '../hooks/message.hook'
 import './auth.css'
-
-export const AuthPage = () => {
+import { connect } from 'react-redux';
+import {setInputAuthAC} from '../redux/action'
+const AuthPage = (props) => {
     const auth = useContext(AuthContext)
     const message = useMessage()
     const {loading,  request, error, clearError} = useHttp()
-    
-    const [form, setForm] = useState({
-        email: '',
-        password: ''
-    })
 
     const changeHandler = event => {
-        setForm({...form, [event.target.name]: event.target.value})
-    }
+        return {value: event.target.value, name: event.target.name}
+     }
 
     useEffect( () => {
        message(error);
@@ -26,7 +22,7 @@ export const AuthPage = () => {
     const registerHandler = async () => {
         try { 
 
-            const data = await request('/api/auth/register', 'POST', {...form})
+            const data = await request('/api/auth/register', 'POST', {email: props.email, password: props.password})
             message(data.message)
         } catch (error) {}
     }
@@ -34,7 +30,7 @@ export const AuthPage = () => {
     const loginHandler = async () => {
         try { 
 
-            const data = await request('/api/auth/login', 'POST', {...form})
+            const data = await request('/api/auth/login', 'POST', {email: props.email, password: props.password})
             auth.login(data.token, data.userId)
         } catch (error) {}
     }
@@ -50,10 +46,10 @@ export const AuthPage = () => {
 
                         <input 
                         placeholder="Email" 
-                        
+                        id="mail"
                         type="text" 
                         name="email"
-                        onChange={changeHandler}
+                        onChange={(e) => props.setInputAuthAC(changeHandler(e))}
                         className="validate"/>
                         
                         <label htmlFor="email">Email</label>
@@ -65,7 +61,7 @@ export const AuthPage = () => {
                        
                         type="text" 
                         name="password"
-                        onChange={changeHandler}
+                        onChange={(e) => props.setInputAuthAC(changeHandler(e))}
                         className="validate"/>
                         
                         <label htmlFor="password">Password</label>
@@ -97,3 +93,13 @@ export const AuthPage = () => {
         </div>
     )
 }
+
+const mapStateToProps = (state) => ({
+    email: state.AuthReducer.currectInput.email,
+    password: state.AuthReducer.currectInput.password,
+  });
+  
+  export default connect(mapStateToProps,
+    {
+        setInputAuthAC
+    })(AuthPage);
